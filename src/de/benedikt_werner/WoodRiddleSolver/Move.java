@@ -4,11 +4,11 @@ public class Move {
     public int whiteMove = 0, blackMove = 0;
     public int screwIndex = -1, screwMove = 0;
     
-    public Move(int moveWood, boolean moveBlack) {
+    public Move(int amount, boolean moveBlack) {
         if (moveBlack)
-            blackMove = moveWood;
+            blackMove = amount;
         else
-            whiteMove = moveWood;
+            whiteMove = amount;
     }
     
     public Move(int moveScrew, int screw) {
