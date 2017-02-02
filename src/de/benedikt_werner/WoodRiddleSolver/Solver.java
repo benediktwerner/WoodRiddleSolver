@@ -34,7 +34,7 @@ public class Solver {
         if (i == 0)
             startPos = new Position(0, -5, new int[]{4, 4, 2, 4, 0});
         else {
-            System.out.println("WhiteOffset BlackOffset Screws1-5 :");
+            System.out.println("WhiteOffset BlackOffset Screws (start is: 0 -5 4 4 2 4 0):");
             startPos = new Position(in.nextInt(), in.nextInt(), new int[]{in.nextInt(), in.nextInt(), in.nextInt(), in.nextInt(), in.nextInt()});
             in.nextLine();
             System.out.println("Direction: (0: solve, 1: build) ");
@@ -77,7 +77,6 @@ public class Solver {
     }
 
     public Position solve(Position startPos, boolean backwards) {
-        int closestW = startPos.whiteOffset, closestB = startPos.blackOffset;
         int goalW = backwards ?  0 : -30;
         int goalB = backwards ? -5 :  25;
         foundPositions = new HashSet<>();
@@ -88,22 +87,9 @@ public class Solver {
         while (!nextPositions.isEmpty()) {
             Position position = nextPositions.removeFirst();
             
-            if (!backwards) {
-                if (position.whiteOffset < closestW) {
-                    closestW = position.whiteOffset;
-                    System.out.println(position);
-                }
-                else if (position.blackOffset > closestB) {
-                    closestB = position.blackOffset;
-                    System.out.println(position);
-                }
-                if (closestW == goalW || closestB == goalB)
-                    return position;
-            }
-            else if (position.whiteOffset == goalW && position.blackOffset == goalB) {
+            if (!backwards && (position.whiteOffset == goalW || position.blackOffset == goalB)
+                    || (backwards && position.whiteOffset == goalW && position.blackOffset == goalB))
                 return position;
-            }
-            
             
             List<Move> possibleMoves = position.possibleMoves(black, white);
             for (Move move : possibleMoves) {

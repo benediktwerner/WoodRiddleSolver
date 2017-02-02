@@ -68,15 +68,6 @@ public class Position {
         System.out.println(pos + " - start");
     }
     
-    public void printPathCompact() {
-        Position pos = this;
-        while (pos.from != null) {
-            if (pos.move.screwIndex == -1)
-                System.out.println(pos.move + " - " + pos.from);
-            pos = pos.from;
-        }
-    }
-    
     public LinkedList<CompactMove> getPathCompact() {
         LinkedList<CompactMove> list = new LinkedList<>();
         Position pos = this;
