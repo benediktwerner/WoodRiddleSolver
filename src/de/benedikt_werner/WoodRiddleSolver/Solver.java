@@ -26,9 +26,12 @@ public class Solver {
                 "X   X   X     X   X     X     "
         };
         Solver s = new Solver(black, white);
+        
+        // Get input
         Scanner in = new Scanner(System.in);
         System.out.println("Solve from start? (0: start, 1: custom)");
         int i = in.nextInt();
+
         Position startPos;
         boolean backwards = false;
         if (i == 0)
@@ -42,9 +45,12 @@ public class Solver {
             if (dir == 1)
                 backwards = true;
         }
+        
+        // Solve
         System.out.println("Starting...");
         Position pos = s.solve(startPos, backwards);
-        
+
+        // Print result
         if (pos == null)
             System.out.println("Impossible!");
         else {
@@ -57,11 +63,11 @@ public class Solver {
         }
         in.close();
     }
-    
+
     public Solver(String[] black, String[] white) {
         this.black = new boolean[black.length][black[0].length()];
         this.white = new boolean[black.length][black[0].length()];
-        
+
         for (int i = 0; i < white.length; i++) {
             for (int c = 0; c < white[4-i].length(); c++) {
                 if (white[4-i].charAt(c) == 'X')
@@ -86,11 +92,11 @@ public class Solver {
 
         while (!nextPositions.isEmpty()) {
             Position position = nextPositions.removeFirst();
-            
+
             if (!backwards && (position.whiteOffset == goalW || position.blackOffset == goalB)
                     || (backwards && position.whiteOffset == goalW && position.blackOffset == goalB))
                 return position;
-            
+
             List<Move> possibleMoves = position.possibleMoves(black, white);
             for (Move move : possibleMoves) {
                 Position newPosition = position.applyMove(move);
@@ -102,7 +108,7 @@ public class Solver {
         }
         return null;
     }
-    
+
     public void printBool2D(boolean[][] array) {
         for (int i = 0; i < array.length; i++) {
             String line = "";

@@ -9,11 +9,11 @@ public class Position {
     public int[] screws;
     private Move move;
     private Position from;
-    
+
     public Position() {
         this(0, 0, new int[5]);
     }
-    
+
     public Position(int whiteOffset, int blackOffset, int[] screws) {
         this.whiteOffset = whiteOffset;
         this.blackOffset = blackOffset;
@@ -21,7 +21,7 @@ public class Position {
         move = null;
         from = null;
     }
-    
+
     private Position(int whiteOffset, int blackOffset, int[] screws, Move move, Position from) {
         this.whiteOffset = whiteOffset;
         this.blackOffset = blackOffset;
@@ -29,13 +29,13 @@ public class Position {
         this.move = move;
         this.from = from;
     }
-    
+
     public Position applyMove(Move move) {
         int[] newScrews = Arrays.copyOf(screws, screws.length);
         if (move.screwIndex != -1) newScrews[move.screwIndex] += move.screwMove;
         return new Position(whiteOffset + move.whiteMove, blackOffset + move.blackMove, newScrews, move, this);
     }
-    
+
     @Override
     public int hashCode() {
         int hashCode = whiteOffset * 3 + blackOffset * 11;
@@ -43,7 +43,7 @@ public class Position {
             hashCode += screws[i] * i;
         return Integer.hashCode(hashCode);
     }
-    
+
     @Override
     public boolean equals(Object other) {
         if (other instanceof Position) {
@@ -53,12 +53,12 @@ public class Position {
         }
         return false;
     }
-    
+
     @Override
     public String toString() {
         return "W " + whiteOffset + ", B " + blackOffset + ", " + Arrays.toString(screws);
     }
-    
+
     public void printPath() {
         Position pos = this;
         while (pos.from != null) {
@@ -67,7 +67,7 @@ public class Position {
         }
         System.out.println(pos + " - start");
     }
-    
+
     public LinkedList<CompactMove> getPathCompact() {
         LinkedList<CompactMove> list = new LinkedList<>();
         Position pos = this;
@@ -83,7 +83,7 @@ public class Position {
         }
         return list;
     }
-    
+
     public List<Move> getMoves() {
         LinkedList<Move> moves = new LinkedList<>();
         Position pos = this;
@@ -104,7 +104,7 @@ public class Position {
             possibleMoves.add(new Move(-1, false));
         if (canMoveWhite(white, +1))
             possibleMoves.add(new Move(+1, false));
-        
+
         for (int screw = 0; screw < screws.length; screw++) {
             if (canMoveScrew(screw, black, white, -1))
                 possibleMoves.add(new Move(-1, screw));
@@ -113,7 +113,7 @@ public class Position {
         }
         return possibleMoves;
     }
-    
+
     private boolean canMoveScrew(int screw, boolean[][] black, boolean[][] white, int move) {
         int newY = screws[screw] + move;
         if (newY >= black.length || newY < 0)
@@ -123,7 +123,7 @@ public class Position {
         return (wPos >= white[newY].length || wPos < 0 || !white[newY][wPos])
                 && (bPos >= black[newY].length || bPos < 0 || !black[newY][bPos]);
     }
-    
+
     private boolean canMoveWhite(boolean[][] white, int move) {
         if (move > 0 && whiteOffset == 0 || whiteOffset <= -30)
             return false;
@@ -134,7 +134,7 @@ public class Position {
                 return false;
         return true;
     }
-    
+
     private boolean canMoveBlack(boolean[][] black, int move) {
         if (move < 0 && blackOffset == -5 || blackOffset >= 25)
             return false;
