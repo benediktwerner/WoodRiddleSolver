@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Solver {
-    private HashSet<Position> foundPositions;
-    private LinkedList<Position> nextPositions;
     private boolean[][] black, white;
 
     public static void main(String[] args) {
@@ -37,13 +35,27 @@ public class Solver {
         if (i == 0)
             startPos = new Position(0, -5, new int[]{4, 4, 2, 4, 0});
         else {
-            System.out.println("WhiteOffset BlackOffset Screws (start is: 0 -5 4 4 2 4 0):");
+            System.out.println();
+            System.out.println("Turn it so that you can read the \"Bonbon\" text.");
+            System.out.println("White should be up with the hole on the left.");
+            System.out.println("Black should be down with the hole on the right.");
+            System.out.println();
+            System.out.println("To solve black must be moved to the right (positive direction)");
+            System.out.println("and white to the left (negative direction)");
+            System.out.println();
+            System.out.println("Offsets are given relative to the leftmost hole.");
+            System.out.println("If both pieces are pushed in completely white is at 0 and black at -5");
+            System.out.println("Screw positions are given from the bottom and start at 0");
+            System.out.println();
+            System.out.println("WhiteOffset BlackOffset Screws (start is: 0 -5 X X 2 4 0):");
             startPos = new Position(in.nextInt(), in.nextInt(), new int[]{in.nextInt(), in.nextInt(), in.nextInt(), in.nextInt(), in.nextInt()});
             in.nextLine();
-            System.out.println("Direction: (0: solve, 1: build) ");
-            int dir = in.nextInt();
-            if (dir == 1)
-                backwards = true;
+            if (startPos.whiteOffset != 0 || startPos.blackOffset != -5) {
+                System.out.println("Direction: (0: solve, 1: build) ");
+                int dir = in.nextInt();
+                if (dir == 1)
+                    backwards = true;
+            }
         }
         
         // Solve
@@ -83,8 +95,12 @@ public class Solver {
     }
 
     public Position solve(Position startPos, boolean backwards) {
+        LinkedList<Position> nextPositions;
+        HashSet<Position> foundPositions;
+
         int goalW = backwards ?  0 : -30;
         int goalB = backwards ? -5 :  25;
+
         foundPositions = new HashSet<>();
         nextPositions = new LinkedList<>();
         nextPositions.add(startPos);
